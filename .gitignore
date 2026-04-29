@@ -37,5 +37,9 @@ server/uploads/*
 coverage/
 *.pem
 
+# Markdown (keep only root README)
+*.md
+!README.md
+
 # Gemini
 .gemini/
