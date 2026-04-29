@@ -1,0 +1,27 @@
+'use client';
+
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/lib/auth-context';
+import { getDashboardPath } from '@/lib/constants';
+
+export default function HomePage() {
+  const { user, loading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading) {
+      if (user) {
+        router.replace(getDashboardPath(user.role));
+      } else {
+        router.replace('/login');
+      }
+    }
+  }, [user, loading, router]);
+
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
+      <div className="spinner" style={{ width: 32, height: 32 }} />
+    </div>
+  );
+}
