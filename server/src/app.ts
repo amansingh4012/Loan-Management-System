@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
+import fs from 'fs';
 import { connectDB } from './config/db';
 import { env } from './config/env';
 import { errorHandler } from './middleware/errorHandler';
@@ -33,11 +34,32 @@ app.use('/api/borrower', borrowerRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/admin', adminRoutes);
 
-
-// ── 404 Handler ───────────────────────────────────────────────────────────────
-app.use((_req, res) => {
-  res.status(404).json({ message: 'Route not found.' });
+// ── API 404 — catch any unmatched /api/* requests ─────────────────────────────
+app.all('/api/*', (_req, res) => {
+  res.status(404).json({ message: 'API route not found.' });
 });
+
+// ── Static Frontend Serving (Production) ──────────────────────────────────────
+// In production, Express serves the Next.js static export from client/out/
+const clientBuildPath = path.join(__dirname, '../../client/out');
+
+if (fs.existsSync(clientBuildPath)) {
+  // Serve static assets (JS, CSS, images, fonts, etc.)
+  app.use(express.static(clientBuildPath, { extensions: ['html'] }));
+
+  // SPA fallback — serve index.html for all unmatched GET requests
+  // Next.js client-side router handles the actual routing
+  app.get('*', (_req, res) => {
+    res.sendFile(path.join(clientBuildPath, 'index.html'));
+  });
+
+  console.log('📦 Serving static frontend from client/out/');
+} else {
+  // Development mode — no built frontend, API-only
+  app.use((_req, res) => {
+    res.status(404).json({ message: 'Route not found.' });
+  });
+}
 
 // ── Global Error Handler ──────────────────────────────────────────────────────
 app.use(errorHandler);

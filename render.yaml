@@ -1,0 +1,22 @@
+# ── Render Blueprint ─────────────────────────────────────────────────────────
+# One-click deploy: https://render.com/deploy
+# Or connect your repo and Render auto-detects this file.
+
+services:
+  - type: web
+    name: creditsea-loan-management
+    runtime: node
+    plan: free
+    buildCommand: npm run build
+    startCommand: npm run start
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: JWT_EXPIRES_IN
+        value: "7d"
+      - key: NODE_ENV
+        value: production

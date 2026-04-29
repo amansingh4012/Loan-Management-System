@@ -64,7 +64,7 @@ export default function SanctionPage() {
 
   // Build salary slip download URL
   const getSlipUrl = (path: string) => {
-    const base = process.env.NEXT_PUBLIC_API_URL?.replace('/api', '') || 'http://localhost:5000';
+    const base = process.env.NEXT_PUBLIC_API_URL?.replace('/api', '') || '';
     return `${base}${path}`;
   };
 
