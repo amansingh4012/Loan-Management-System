@@ -1,0 +1,41 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+.next/
+out/
+
+# Environment files
+.env
+.env.local
+.env*.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs
+*.log
+npm-debug.log*
+
+# Uploads (keep directory, ignore files)
+server/uploads/*
+!server/uploads/.gitkeep
+
+# TypeScript
+*.tsbuildinfo
+
+# Misc
+.vercel
+coverage/
+*.pem
+
+# Gemini
+.gemini/
